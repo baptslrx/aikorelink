@@ -49,7 +49,10 @@ final class SelfTest {
 
     private func steps() async {
         let fm = FileManager.default
-        let base = fm.temporaryDirectory.appendingPathComponent("aikorelink-\(UUID().uuidString)").path
+        // Chemin réel (/private/var/…), comme le renvoie le parcours des disques
+        let tmpReal = realpath(fm.temporaryDirectory.path, nil).map { p -> String in defer { free(p) }; return String(cString: p) }
+            ?? fm.temporaryDirectory.path
+        let base = tmpReal + "/aikorelink-\(UUID().uuidString)"
         let newDisk = base + "/SSD_Rushs_2026"
         // Les rushs ont changé de disque (« T7 » → « SSD_Rushs_2026 »), certains ont été renommés
         Self.touch(newDisk + "/NTO/Interviews/A001_C001.MOV")
