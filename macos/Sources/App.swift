@@ -97,9 +97,11 @@ final class RelinkModel: ObservableObject {
         cancelled = false
         progress = "Recherche sur les disques…"
         let roots = self.roots
-        let found = await Task.detached { [weak self] () -> [MatchResult] in
+        let model = self
+        let found = await Task.detached { () -> [MatchResult] in
             let files = Matcher.scan(roots, progress: { n, dir in
-                Task { @MainActor in self?.progress = "\(n) médias parcourus… \((dir as NSString).lastPathComponent)" }
+                let text = "\(n) médias parcourus… \((dir as NSString).lastPathComponent)"
+                Task { @MainActor in model.progress = text }
             }, cancel: { false })
             return Matcher.match(wanted, files: files, durationOf: mediaDuration)
         }.value
