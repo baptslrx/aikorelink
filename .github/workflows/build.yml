@@ -1,0 +1,53 @@
+name: Compiler AikoRelink
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    runs-on: macos-14
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Préparer
+        run: mkdir -p screenshots
+      - name: Compilation de l'appli (universelle)
+        if: always()
+        run: |
+          set +e
+          UNIVERSAL=1 ./macos/build.sh > screenshots/build.log 2>&1
+          code=$?
+          codesign -d -r- macos/build/AikoRelink.app >> screenshots/build.log 2>&1
+          cat screenshots/build.log
+          grep -E "error:" screenshots/build.log | head -n 15 | while IFS= read -r l; do echo "::error title=Compilation::$l"; done
+          exit $code
+      - name: Test en direct (faux disques, faux DaVinci)
+        timeout-minutes: 5
+        run: |
+          ./macos/build/AikoRelink.app/Contents/MacOS/AikoRelink --selftest "$PWD/screenshots" 2>&1 | tee screenshots/appli.txt
+      - name: Publier le rapport (branche captures-Mac)
+        if: always()
+        run: |
+          cd screenshots || exit 0
+          git init -q -b captures-Mac
+          git -c user.name=ci -c user.email=ci@aikorelink add -A
+          git -c user.name=ci -c user.email=ci@aikorelink commit -q -m "Rapport Mac" || exit 0
+          ls -la
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:captures-Mac > push.txt 2>&1 \
+            || { tail -n 5 push.txt | while IFS= read -r l; do echo "::error title=Envoi du rapport::$l"; done; exit 1; }
+      - name: Archive
+        run: |
+          mkdir -p dist
+          ditto -c -k --sequesterRsrc --keepParent macos/build/AikoRelink.app dist/AikoRelink-Mac.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AikoRelink-Mac
+          path: dist/AikoRelink-Mac.zip
