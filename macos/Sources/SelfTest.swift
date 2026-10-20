@@ -142,9 +142,9 @@ final class SelfTest {
 
         log("== Réparation dans DaVinci")
         await model.repair()
-        let log = (try? JSONSerialization.jsonObject(with: Data(contentsOf: URL(fileURLWithPath: fake + "/replaced.json")))) as? [String: String] ?? [:]
-        check(log["c1"] == newDisk + "/NTO/Interviews/A001_C001.MOV" && log["c5"] != nil, "DaVinci a reçu les nouveaux chemins (\(log.count))")
-        check(log["c6"] == nil, "le média introuvable n'est pas touché")
+        let replaced = (try? JSONSerialization.jsonObject(with: Data(contentsOf: URL(fileURLWithPath: fake + "/replaced.json")))) as? [String: String] ?? [:]
+        check(replaced["c1"] == newDisk + "/NTO/Interviews/A001_C001.MOV" && replaced["c5"] != nil, "DaVinci a reçu les nouveaux chemins (\(replaced.count))")
+        check(replaced["c6"] == nil, "le média introuvable n'est pas touché")
         check(model.summary.contains("réparé"), "message : \(model.summary)")
         await snapshot(RelinkView(model: model), name: "termine")
         try? fm.removeItem(atPath: base)
