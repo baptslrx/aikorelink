@@ -29,6 +29,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     let model = RelinkModel()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        EditMenu.install(appName: "AikoRelink")
         let w = NSWindow(contentViewController: NSHostingController(rootView: RelinkView(model: model)))
         w.title = "AikoRelink"
         w.styleMask = [.titled, .closable, .miniaturizable, .resizable]
