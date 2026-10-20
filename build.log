@@ -1,0 +1,10 @@
+→ Compilation universelle (arm64 + x86_64)…
+Sources/App.swift:52:19: warning: 'duration' was deprecated in macOS 13.0: Use load(.duration) instead
+    let d = asset.duration
+                  ^
+Sources/App.swift:52:19: warning: 'duration' was deprecated in macOS 13.0: Use load(.duration) instead
+    let d = asset.duration
+                  ^
+✓ build/AikoRelink.app prêt
+Executable=/Users/runner/work/aikorelink/aikorelink/macos/build/AikoRelink.app/Contents/MacOS/AikoRelink
+designated => identifier "fr.aikographic.aikorelink"

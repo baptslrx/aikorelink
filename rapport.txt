@@ -1,0 +1,30 @@
+== Lecture du projet (API Python de DaVinci, simulée)
+  ok   connexion : ok
+  ok   projet lu : Interviews NTO, 7 médias
+  ok   6 médias hors ligne repérés (6)
+== Recherche sur les disques
+   interview_zynox.wav → …/SSD_Rushs_2026/NTO/Son/interview_zynox.wav [Sûr, 106] même nom, mêmes dossiers (2), même durée
+   A001_C003.MOV → …/SSD_Rushs_2026/NTO/Interviews/A001_C003.MOV [Sûr, 76] même nom, mêmes dossiers (2)
+   A001_C002.MOV → …/SSD_Rushs_2026/NTO/Interviews/A001_C002.MOV [Sûr, 76] même nom, mêmes dossiers (2)
+   A001_C001.MOV → …/SSD_Rushs_2026/NTO/Interviews/A001_C001.MOV [Sûr, 76] même nom, mêmes dossiers (2)
+   drone_04.mp4 → …/SSD_Rushs_2026/NTO/Plans/drone 04.mp4 [Probable, 61] nom presque identique, mêmes dossiers (2)
+   introuvable.mov → rien [Introuvable, 0] 
+  ok   même nom, autre disque : sûr (et le dossier node_modules est ignoré)
+  ok   deux fichiers du même nom : le bon dossier gagne
+  ok   fichier renommé « drone 04 » retrouvé
+  ok   même nom mais mauvaise durée écarté (son de 2 s, pas 5 s)
+  ok   fichier introuvable : rien de coché
+   capture resultats-sombre.png
+   capture resultats-clair.png
+== Réparation dans DaVinci
+  ok   DaVinci a reçu les nouveaux chemins (5)
+  ok   le média introuvable n'est pas touché
+  ok   message : 5 médias réparés. Pense à enregistrer le projet (⌘S dans DaVinci).
+   capture termine-sombre.png
+   capture termine-clair.png
+== Sans DaVinci
+  ok   message clair si DaVinci ne répond pas : DaVinci refuse la connexion. Dans DaVinci : Préférences → Système → Général → « Script externe » : Local (version Studio nécessaire). No module named 'DaVinciResolveScript'
+   capture sans-davinci-sombre.png
+   capture sans-davinci-clair.png
+
+Tout est OK
